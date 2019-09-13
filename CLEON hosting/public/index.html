@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CLEON Hotspot - Histori Penggunaan</title>
+	<script src="https://www.gstatic.com/firebasejs/4.9.1/firebase.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script>
+	$(document).ready(function(){
+		$("#json").click(function(){
+			$("pre").toggle();
+		});
+	});
+	</script>
+	<script>
+	$(document).ready(function(){
+		$("#table").click(function(){
+			$("table").toggle();
+		});
+	});
+	</script>
+	<style type="text/css">
+	   body { background: #ECF0F5 !important; }
+	</style>
+	<link rel="icon" href="logo_cleon_small.png">
+  </head>
+  <body>
+	<div>
+	<br />
+	<div class="panel panel-default">
+	<div class="panel-body" align="center"><a href="http://new.megacleon.com/" target="_blank"><img src="logo_cleon_web.png" width="300px" /></a>
+	<h1>Histori Penggunaan</h1>
+	
+	<button type="button" class="btn btn-primary" id="json">Format JSON</button>
+	<br />
+	<br />
+    <pre id="object" align="left" hidden></pre>
+	<button type="button" class="btn btn-primary" id="table">Format Tabel</button>
+	<br />
+	<br />
+	<div class="table-responsive">
+		<table class="table table-bordered" id="secret-table" hidden >
+		  <tr id="tr" class="info">
+			<th>ID Pengguna</th>
+			<th>Nama Pengguna</th> 
+			<th>Email Pengguna</th>
+			<th>Waktu Masuk Pengguna</th>
+			</tr>
+		 </table> 
+	 </div>
+	 <script src="app.js"></script>
+	 <script>
+		var database = firebase.database();
+		database.ref().child('User').once('value', function(snapshot){
+			if(snapshot.exists()){
+				var content = '';
+				snapshot.forEach(function(data){
+					var val = data.val();
+					content +='<tr class="success">';
+					content += '<td>' + val.id + '</td>';
+					content += '<td>' + val.username + '</td>';
+					content += '<td>' + val.email + '</td>';
+					content += '<td>' + val.lastlogin + '</td>';
+					content += '</tr>';
+				});
+				$('#secret-table').append(content);
+			}
+		});
+	</script>
+	</div>
+	</div>
+  </body>
+</html>
